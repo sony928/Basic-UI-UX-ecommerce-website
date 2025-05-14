@@ -10,7 +10,7 @@ Responsive layout for better accessibility on different devices.
 
 Simplified navigation for an enhanced user experience.
 
-Note
+Note:
 While implementing this project, I prioritized UI/UX design and functionality. Some image paths might be misplaced or missing, which could result in broken image links. Please ensure to review and correct these paths as needed.
 
 Purpose
