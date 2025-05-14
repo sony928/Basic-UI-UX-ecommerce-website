@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zidio Store - Premium T-Shirts Collection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .video-background video {
+            min-width: 100%;
+            min-height: 100%;
+            object-fit: cover;
+            opacity: 0.15;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff6b6b;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #ff6b6b;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #ff6b6b;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #ff5252;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .products-container {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            color: #333;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: #ff6b6b;
+            margin: 0.5rem auto 0;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ff6b6b;
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .current-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #ff6b6b;
+            margin-right: 0.8rem;
+        }
+
+        .original-price {
+            font-size: 1rem;
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .product-sizes {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .size-option {
+            padding: 0.3rem 0.6rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .size-option:hover {
+            background-color: #f0f0f0;
+        }
+
+        .size-option.selected {
+            background-color: #333;
+            color: white;
+            border-color: #333;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stars {
+            color: #ffc107;
+            margin-right: 0.5rem;
+        }
+
+        .review-count {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .product-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .quick-view-btn {
+            background-color: transparent;
+            border: 1px solid #333;
+            color: #333;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quick-view-btn:hover {
+            background-color: #333;
+            color: white;
+        }
+
+        .add-to-cart {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background-color: #555;
+        }
+
+        /* Quick View Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            width: 80%;
+            max-width: 900px;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            animation: modalFadeIn 0.3s;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-image {
+            width: 50%;
+            height: 500px;
+            object-fit: cover;
+        }
+
+        .modal-details {
+            width: 50%;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: #333;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .modal-price {
+            font-size: 1.5rem;
+            color: #ff6b6b;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .modal-description {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .modal-sizes {
+            margin-bottom: 1.5rem;
+        }
+
+        .size-title {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            background-color: #f0f0f0;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .quantity-input {
+            width: 50px;
+            height: 30px;
+            text-align: center;
+            border: 1px solid #ddd;
+            margin: 0 0.5rem;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #ff6b6b;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: #ff6b6b;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                flex-direction: column;
+                width: 90%;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+
+            .modal-image {
+                width: 100%;
+                height: 300px;
+            }
+
+            .modal-details {
+                width: 100%;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Video -->
+    <div class="video-background">
+        <!-- Replace with your video path -->
+        <video autoplay muted loop>
+            <source src="assests\10296173-hd_1920_1080_25fps.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">ZIDIO</div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Shop</a></li>
+                <li><a href="#">Collections</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Premium T-Shirts Collection</h1>
+        <p>Discover our exclusive range of high-quality t-shirts designed for comfort and style. Limited edition designs with the perfect fit for every occasion.</p>
+        <a href="#" class="btn">Shop Now</a>
+    </section>
+
+    <!-- Products Section -->
+     
+    <section class="products-container">
+        <h2 class="section-title">Featured Products</h2>
+        <div class="products-grid">
+            <!-- Product 1 -->
+            <div class="product-card">
+                <span class="product-badge">Sale</span>
+                <!-- Replace with your image path -->
+                <img src="assests\1744104542-232562-mens-450x540.jpg" alt="Graphic Print T-Shirt" class="product-image" onclick="openQuickView(1)">
+                <div class="product-info">
+                    <h3 class="product-title">Graphic Print T-Shirt</h3>
+                    <div class="product-price">
+                        <span class="current-price">$24.99</span>
+                        <span class="original-price">$34.99</span>
+                    </div>
+                    <div class="product-rating">
+                        <div class="stars">★★★★★</div>
+                        <span class="review-count">(128 reviews)</span>
+                    </div>
+                    <div class="product-sizes">
+                        <span class="size-option">S</span>
+                        <span class="size-option selected">M</span>
+                        <span class="size-option">L</span>
+                        <span class="size-option">XL</span>
+                        <span class="size-option">XXL</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="quick-view-btn" onclick="openQuickView(1)">Quick View</button>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-card">
+                <!-- Replace with your image path -->
+                <img src="assests\1744104566-232049-sweater-450x540.jpg" alt="Classic Cotton T-Shirt" class="product-image" onclick="openQuickView(2)">
+                <div class="product-info">
+                    <h3 class="product-title">Classic Cotton T-Shirt</h3>
+                    <div class="product-price">
+                        <span class="current-price">$19.99</span>
+                    </div>
+                    <div class="product-rating">
+                        <div class="stars">★★★★☆</div>
+                        <span class="review-count">(86 reviews)</span>
+                    </div>
+                    <div class="product-sizes">
+                        <span class="size-option">S</span>
+                        <span class="size-option selected">M</span>
+                        <span class="size-option">L</span>
+                        <span class="size-option">XL</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="quick-view-btn" onclick="openQuickView(2)">Quick View</button>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+                        <!-- Product 2 -->
+                        <div class="product-card">
+                            <!-- Replace with your image path -->
+                            <img src="assests\il_600x600.6466422196_3x6z.webp" alt="Classic Cotton T-Shirt" class="product-image" onclick="openQuickView(2)">
+                            <div class="product-info">
+                                <h3 class="product-title">Classic Cotton T-Shirt</h3>
+                                <div class="product-price">
+                                    <span class="current-price">$19.99</span>
+                                </div>
+                                <div class="product-rating">
+                                    <div class="stars">★★★★☆</div>
+                                    <span class="review-count">(86 reviews)</span>
+                                </div>
+                                <div class="product-sizes">
+                                    <span class="size-option">S</span>
+                                    <span class="size-option selected">M</span>
+                                    <span class="size-option">L</span>
+                                    <span class="size-option">XL</span>
+                                </div>
+                                <div class="product-actions">
+                                    <button class="quick-view-btn" onclick="openQuickView(2)">Quick View</button>
+                                    <button class="add-to-cart">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                 <!-- Product 2 -->
+            <div class="product-card">
+                <!-- Replace with your image path -->
+                <img src="assests\ssrco,classic_tee,mens_02,4a4440_cc103efb7a,front,product_square,x600.jpg" alt="Classic Cotton T-Shirt" class="product-image" onclick="openQuickView(2)">
+                <div class="product-info">
+                    <h3 class="product-title">Classic Cotton T-Shirt</h3>
+                    <div class="product-price">
+                        <span class="current-price">$19.99</span>
+                    </div>
+                    <div class="product-rating">
+                        <div class="stars">★★★★☆</div>
+                        <span class="review-count">(86 reviews)</span>
+                    </div>
+                    <div class="product-sizes">
+                        <span class="size-option">S</span>
+                        <span class="size-option selected">M</span>
+                        <span class="size-option">L</span>
+                        <span class="size-option">XL</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="quick-view-btn" onclick="openQuickView(2)">Quick View</button>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+                        <!-- Product 2 -->
+                        <div class="product-card">
+                            <!-- Replace with your image path -->
+                            <img src="assests\ssrco,classic_tee,mens_02,101010_01c5ca27c6,front,product_square,x600.jpg" alt="Classic Cotton T-Shirt" class="product-image" onclick="openQuickView(2)">
+                            <div class="product-info">
+                                <h3 class="product-title">Classic Cotton T-Shirt</h3>
+                                <div class="product-price">
+                                    <span class="current-price">$19.99</span>
+                                </div>
+                                <div class="product-rating">
+                                    <div class="stars">★★★★☆</div>
+                                    <span class="review-count">(86 reviews)</span>
+                                </div>
+                                <div class="product-sizes">
+                                    <span class="size-option">S</span>
+                                    <span class="size-option selected">M</span>
+                                    <span class="size-option">L</span>
+                                    <span class="size-option">XL</span>
+                                </div>
+                                <div class="product-actions">
+                                    <button class="quick-view-btn" onclick="openQuickView(2)">Quick View</button>
+                                    <button class="add-to-cart">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                                    <!-- Product 2 -->
+            <div class="product-card">
+                <!-- Replace with your image path -->
+                <img src="assests\ssrco,classic_tee,mens_02,dd2121_8219e99865,front,product_square,x600.u4.jpg" alt="Classic Cotton T-Shirt" class="product-image" onclick="openQuickView(2)">
+                <div class="product-info">
+                    <h3 class="product-title">Classic Cotton T-Shirt</h3>
+                    <div class="product-price">
+                        <span class="current-price">$19.99</span>
+                    </div>
+                    <div class="product-rating">
+                        <div class="stars">★★★★☆</div>
+                        <span class="review-count">(86 reviews)</span>
+                    </div>
+                    <div class="product-sizes">
+                        <span class="size-option">S</span>
+                        <span class="size-option selected">M</span>
+                        <span class="size-option">L</span>
+                        <span class="size-option">XL</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="quick-view-btn" onclick="openQuickView(2)">Quick View</button>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+                        <!-- Product 2 -->
+                        <div class="product-card">
+                            <!-- Replace with your image path -->
+                            <img src="assests\ssrco,classic_tee,mens_02,fafafa_ca443f4786,front,product_square,x600 (1).jpg" alt="Classic Cotton T-Shirt" class="product-image" onclick="openQuickView(2)">
+                            <div class="product-info">
+                                <h3 class="product-title">Classic Cotton T-Shirt</h3>
+                                <div class="product-price">
+                                    <span class="current-price">$19.99</span>
+                                </div>
+                                <div class="product-rating">
+                                    <div class="stars">★★★★☆</div>
+                                    <span class="review-count">(86 reviews)</span>
+                                </div>
+                                <div class="product-sizes">
+                                    <span class="size-option">S</span>
+                                    <span class="size-option selected">M</span>
+                                    <span class="size-option">L</span>
+                                    <span class="size-option">XL</span>
+                                </div>
+                                <div class="product-actions">
+                                    <button class="quick-view-btn" onclick="openQuickView(2)">Quick View</button>
+                                    <button class="add-to-cart">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                                    <!-- Product 2 -->
+            <div class="product-card">
+                <!-- Replace with your image path -->
+                <img src="assests\ssrco,classic_tee,mens_02,fafafa_ca443f4786,front,product_square,x600.jpg" alt="Classic Cotton T-Shirt" class="product-image" onclick="openQuickView(2)">
+                <div class="product-info">
+                    <h3 class="product-title">Classic Cotton T-Shirt</h3>
+                    <div class="product-price">
+                        <span class="current-price">$19.99</span>
+                    </div>
+                    <div class="product-rating">
+                        <div class="stars">★★★★☆</div>
+                        <span class="review-count">(86 reviews)</span>
+                    </div>
+                    <div class="product-sizes">
+                        <span class="size-option">S</span>
+                        <span class="size-option selected">M</span>
+                        <span class="size-option">L</span>
+                        <span class="size-option">XL</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="quick-view-btn" onclick="openQuickView(2)">Quick View</button>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 3 -->
+            <div class="product-card">
+                <span class="product-badge">New</span>
+                <!-- Replace with your image path -->
+                <img src="assests\tshirts.jpg" alt="Premium Slim Fit T-Shirt" class="product-image" onclick="openQuickView(3)">
+                <div class="product-info">
+                    <h3 class="product-title">Premium Slim Fit T-Shirt</h3>
+                    <div class="product-price">
+                        <span class="current-price">$29.99</span>
+                    </div>
+                    <div class="product-rating">
+                        <div class="stars">★★★★★</div>
+                        <span class="review-count">(214 reviews)</span>
+                    </div>
+                    <div class="product-sizes">
+                        <span class="size-option">S</span>
+                        <span class="size-option">M</span>
+                        <span class="size-option selected">L</span>
+                        <span class="size-option">XL</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="quick-view-btn" onclick="openQuickView(3)">Quick View</button>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="product-card">
+                <!-- Replace with your image path -->
+                <img src="assests\64f0def202b6c43ebe315aa7-marvel-men-39-s-team-ups-group-shot.jpg" alt="Oversized Streetwear Tee" class="product-image" onclick="openQuickView(4)">
+                <div class="product-info">
+                    <h3 class="product-title">Oversized Streetwear Tee</h3>
+                    <div class="product-price">
+                        <span class="current-price">$27.99</span>
+                        <span class="original-price">$32.99</span>
+                    </div>
+                    <div class="product-rating">
+                        <div class="stars">★★★★☆</div>
+                        <span class="review-count">(157 reviews)</span>
+                    </div>
+                    <div class="product-sizes">
+                        <span class="size-option">S</span>
+                        <span class="size-option">M</span>
+                        <span class="size-option selected">L</span>
+                        <span class="size-option">XL</span>
+                        <span class="size-option">XXL</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="quick-view-btn" onclick="openQuickView(4)">Quick View</button>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick View Modal -->
+    <div class="modal" id="quickViewModal">
+        <div class="modal-content">
+            <!-- Image will be inserted here by JavaScript -->
+            <img src="" alt="Product Image" class="modal-image" id="modalImage">
+            <div class="modal-details">
+                <span class="close-modal" onclick="closeQuickView()">&times;</span>
+                <h2 class="modal-title" id="modalTitle">Product Title</h2>
+                <div class="modal-price" id="modalPrice">$0.00</div>
+                <div class="product-rating">
+                    <div class="stars" id="modalRating">★★★★★</div>
+                    <span class="review-count" id="modalReviews">(0 reviews)</span>
+                </div>
+                <p class="modal-description" id="modalDescription">
+                    This is a detailed description of the product. It includes information about materials, fit, care instructions, and other relevant details that customers might want to know before making a purchase.
+                </p>
+                <div class="modal-sizes">
+                    <span class="size-title">Size:</span>
+                    <div class="product-sizes">
+                        <span class="size-option">S</span>
+                        <span class="size-option selected">M</span>
+                        <span class="size-option">L</span>
+                        <span class="size-option">XL</span>
+                        <span class="size-option">XXL</span>
+                    </div>
+                </div>
+                <div class="quantity-selector">
+                    <span class="size-title">Quantity:</span>
+                    <button class="quantity-btn" onclick="changeQuantity(-1)">-</button>
+                    <input type="text" class="quantity-input" value="1" id="quantity">
+                    <button class="quantity-btn" onclick="changeQuantity(1)">+</button>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn" id="modalAddToCart">Add to Cart</button>
+                    <button class="quick-view-btn">Wishlist</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="#">Home</a>
+            <a href="#">Shop</a>
+            <a href="#">About Us</a>
+            <a href="#">Contact</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+        </div>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-pinterest"></i></a>
+        </div>
+        <p class="copyright">© 2023 Zidio Store. All rights reserved.</p>
+    </footer>
+
+    <!-- Font Awesome for icons (you can replace with your own icon solution) -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <script>
+        // Product data
+        const products = [
+            {
+                id: 1,
+                title: "Graphic Print T-Shirt",
+                price: 24.99,
+                originalPrice: 34.99,
+                rating: "★★★★★",
+                reviews: 128,
+                description: "This trendy graphic print t-shirt features a unique design printed with eco-friendly inks. Made from 100% organic cotton for maximum comfort. Machine wash cold, tumble dry low.",
+                image: "assests/1744104542-232562-mens-450x540.jpg"
+            },
+            {
+                id: 2,
+                title: "Classic Cotton T-Shirt",
+                price: 19.99,
+                originalPrice: null,
+                rating: "★★★★☆",
+                reviews: 86,
+                description: "The perfect basic tee made from premium combed cotton. Features a classic fit with reinforced shoulders for durability. Available in multiple colors.",
+                image: "assests/1744104566-232049-sweater-450x540.jpg"
+            },
+            {
+                id: 3,
+                title: "Premium Slim Fit T-Shirt",
+                price: 29.99,
+                originalPrice: null,
+                rating: "★★★★★",
+                reviews: 214,
+                description: "Our best-selling slim fit t-shirt made from luxurious pima cotton. Features a tailored fit with stretch for comfort. Ideal for layering or wearing alone.",
+                image: "assests/il_600x600.6466422196_3x6z.webp"
+            },
+            {
+                id: 4,
+                title: "Premium Slim Fit T-Shirt",
+                price: 29.99,
+                originalPrice: null,
+                rating: "★★★★★",
+                reviews: 214,
+                description: "Our best-selling slim fit t-shirt made from luxurious pima cotton. Features a tailored fit with stretch for comfort. Ideal for layering or wearing alone.",
+                image: "assests/ssrco,classic_tee,mens_02,4a4440_cc103efb7a,front,product_square,x600.jpg"
+            },
+            {           
+                id: 5,
+                title: "Premium Slim Fit T-Shirt",
+                price: 29.99,
+                originalPrice: null,
+                rating: "★★★★★",
+                reviews: 214,
+                description: "Our best-selling slim fit t-shirt made from luxurious pima cotton. Features a tailored fit with stretch for comfort. Ideal for layering or wearing alone.",
+                image: "assests/ssrco,classic_tee,mens_02,101010_01c5ca27c6,front,product_square,x600.jpg"
+            },
+            {
+                id: 6,
+                title: "Premium Slim Fit T-Shirt",
+                price: 29.99,
+                originalPrice: null,
+                rating: "★★★★★",
+                reviews: 214,
+                description: "Our best-selling slim fit t-shirt made from luxurious pima cotton. Features a tailored fit with stretch for comfort. Ideal for layering or wearing alone.",
+                image: "assests/ssrco,classic_tee,mens_02,dd2121_8219e99865,front,product_square,x600.u4.jpg"
+            },
+            {
+                id: 7,
+                title: "Premium Slim Fit T-Shirt",
+                price: 29.99,
+                originalPrice: null,
+                rating: "★★★★★",
+                reviews: 214,
+                description: "Our best-selling slim fit t-shirt made from luxurious pima cotton. Features a tailored fit with stretch for comfort. Ideal for layering or wearing alone.",
+                image: "assests/ssrco,classic_tee,mens_02,fafafa_ca443f4786,front,product_square,x600 (1).jpg"
+            },
+            {
+                id: 8,
+                title: "Premium Slim Fit T-Shirt",
+                price: 29.99,
+                originalPrice: null,
+                rating: "★★★★★",
+                reviews: 214,
+                description: "Our best-selling slim fit t-shirt made from luxurious pima cotton. Features a tailored fit with stretch for comfort. Ideal for layering or wearing alone.",
+                image: "assests/ssrco,classic_tee,mens_02,fafafa_ca443f4786,front,product_square,x600.jpg"
+            },
+            {
+                id: 9,
+                title: "Premium Slim Fit T-Shirt",
+                price: 29.99,
+                originalPrice: null,
+                rating: "★★★★★",
+                reviews: 214,
+                description: "Our best-selling slim fit t-shirt made from luxurious pima cotton. Features a tailored fit with stretch for comfort. Ideal for layering or wearing alone.",
+                image: "assests/tshirts.jpg"
+            },
+            {
+                id: 10,
+                title: "Oversized Streetwear Tee",
+                price: 27.99,
+                originalPrice: 32.99,
+                rating: "★★★★☆",
+                reviews: 157,
+                description: "Contemporary oversized fit with dropped shoulders for a streetwear look. Made from heavyweight cotton for structure and durability. Designed in Los Angeles.",
+                image: "assests/64f0def202b6c43ebe315aa7-marvel-men-39-s-team-ups-group-shot.jpg"
+            }
+        ];
+
+        // Quick View Modal Functions
+        function openQuickView(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                document.getElementById('modalImage').src = product.image;
+                document.getElementById('modalTitle').textContent = product.title;
+                
+                if (product.originalPrice) {
+                    document.getElementById('modalPrice').innerHTML = 
+                        `$${product.price.toFixed(2)} <span style="text-decoration: line-through; color: #999; font-size: 1rem;">$${product.originalPrice.toFixed(2)}</span>`;
+                } else {
+                    document.getElementById('modalPrice').textContent = `$${product.price.toFixed(2)}`;
+                }
+                
+                document.getElementById('modalRating').textContent = product.rating;
+                document.getElementById('modalReviews').textContent = `(${product.reviews} reviews)`;
+                document.getElementById('modalDescription').textContent = product.description;
+                
+                // Update add to cart button with product ID
+                document.getElementById('modalAddToCart').setAttribute('data-product-id', product.id);
+                
+                document.getElementById('quickViewModal').style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeQuickView() {
+            document.getElementById('quickViewModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('quickViewModal');
+            if (event.target === modal) {
+                closeQuickView();
+            }
+        }
+
+        // Quantity selector
+        function changeQuantity(change) {
+            const quantityInput = document.getElementById('quantity');
+            let quantity = parseInt(quantityInput.value);
+            quantity += change;
+            if (quantity < 1) quantity = 1;
+            if (quantity > 10) quantity = 10;
+            quantityInput.value = quantity;
+        }
+
+        // Size selection
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('size-option') && !e.target.classList.contains('selected')) {
+                const sizeContainer = e.target.parentElement;
+                const sizes = sizeContainer.querySelectorAll('.size-option');
+                sizes.forEach(size => size.classList.remove('selected'));
+                e.target.classList.add('selected');
+            }
+        });
+
+        // Add to cart functionality (simplified)
+        document.querySelectorAll('.add-to-cart, #modalAddToCart').forEach(button => {
+            button.addEventListener('click', function() {
+                const productId = this.getAttribute('data-product-id') || 
+                                  this.closest('.product-card').querySelector('.quick-view-btn').getAttribute('onclick').match(/\d+/)[0];
+                const product = products.find(p => p.id === parseInt(productId));
+                const size = this.closest('.product-card, .modal-details').querySelector('.size-option.selected').textContent;
+                const quantity = this.closest('.modal-details') ? 
+                                 parseInt(document.getElementById('quantity').value) : 1;
+                
+                alert(`Added to cart: ${product.title} (Size: ${size}, Quantity: ${quantity})`);
+                closeQuickView();
+            });
+        });
+    </script>
+</body>
+</html>
